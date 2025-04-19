@@ -7,10 +7,19 @@ use Illuminate\Http\Request;
 
 class DriverController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $drivers = Driver::all();
-        return view('drivers.index', compact('drivers'));
+        $search = $request->input('search');
+        $filter = $request->input('filter');
+
+        $drivers = Driver::query()
+            ->when($search && $filter, function ($query) use ($search, $filter) {
+                return $query->where($filter, 'like', "%{$search}%");
+            })
+            ->orderBy('Name') // Make sure this is capitalized correctly based on your DB
+            ->paginate(10);
+
+        return view('drivers.index', compact('drivers', 'search', 'filter'));
     }
 
     public function create()

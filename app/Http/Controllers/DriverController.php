@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Driver;
 use Illuminate\Http\Request;
+use Barryvdh\DomPDF\Facade\Pdf; // Import the PDF facade
 
 class DriverController extends Controller
 {
@@ -73,5 +74,17 @@ class DriverController extends Controller
     {
         $driver->delete();
         return redirect()->route('drivers.index')->with('success', 'Driver deleted successfully.');
+    }
+
+    // PDF Export Method
+    public function exportPDF()
+    {
+        $drivers = Driver::all();  // Retrieve all driver records
+
+        // Load the PDF view and pass the drivers data
+        $pdf = PDF::loadView('drivers.pdf', compact('drivers'));
+
+        // Download the generated PDF
+        return $pdf->download('drivers-report.pdf');
     }
 }

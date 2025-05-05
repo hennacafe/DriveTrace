@@ -6,6 +6,7 @@ use App\Http\Controllers\DriverController;
 
 
 Route::resource('drivers', DriverController::class);
+Route::get('/drivers/export/pdf', [DriverController::class, 'exportPDF'])->name('drivers.export.pdf');
 
 Route::get('/', function () {
     return view('welcome');

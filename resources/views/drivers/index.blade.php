@@ -14,10 +14,10 @@
                 </div>
             @endif
 
-            {{-- Swapped: Search bar on the left, Add button on the right --}}
+           
             <div class="mb-6 flex flex-wrap items-center justify-between gap-2">
                 {{-- Search Form (now on the left) --}}
-                <form method="GET" action="{{ route('drivers.index') }}" class="flex gap-2 items-center">
+                <form method="GET" action="{{ route('drivers.index') }}" class="flex flex-wrap gap-2 items-center">
                     <select name="filter"
                             class="border px-4 py-2 rounded focus:outline-none focus:ring focus:border-blue-300 dark:bg-gray-900 dark:text-white">
                         <option value="id" {{ request('filter') == 'id' ? 'selected' : '' }}>id</option>
@@ -28,17 +28,24 @@
                         <option value="Address" {{ request('filter') == 'Address' ? 'selected' : '' }}>Address</option>
                         <option value="Duty_hours" {{ request('filter') == 'Duty_hours' ? 'selected' : '' }}>Duty Hours</option>
                     </select>
-                
+
                     <input type="text" name="search" placeholder="Search..."
                            value="{{ request('search') }}"
                            class="border px-4 py-2 rounded focus:outline-none focus:ring focus:border-blue-300 dark:bg-gray-900 dark:text-white" />
-                
+
                     <button type="submit"
                             class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition">
                         Search
                     </button>
+
+                    {{-- Reset button only shows when there is a search or filter applied --}}
+                    @if(request('search') || request('filter'))
+                        <a href="{{ route('drivers.index') }}"
+                           class="bg-gray-400 text-white px-4 py-2 rounded hover:bg-gray-500 transition">
+                            Reset
+                        </a>
+                    @endif
                 </form>
-                
 
                 {{-- Add New Driver Button (now on the right) --}}
                 <a href="{{ route('drivers.create') }}"
@@ -100,6 +107,15 @@
                 <div class="mt-4 px-4 py-2">
                     {{ $drivers->appends(['search' => request('search'), 'filter' => request('filter')])->links() }}
                 </div>
+
+                {{-- PDF Export Button --}}
+                <div class="mt-4 px-4 py-2 text-right">
+                    <a href="{{ route('drivers.export.pdf') }}"
+                       class="bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded shadow transition">
+                        Export PDF
+                    </a>
+                </div>
+
             </div>
         </div>
     </div>

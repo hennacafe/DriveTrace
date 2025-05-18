@@ -2,18 +2,20 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Driver extends Model
+class Truck extends Model
 {
+    use HasFactory;
+
+    protected $table = 'trucks';
+
     protected $fillable = [
-        'Name', 
-        'Age', 
-        'Address', 
-        'Contact_Number', 
-        'Gender', 
-        'License_number', 
-        'Duty_hours'
+        'Plate_number',
+        'Brand',
+        'Model',
+        'color',
     ];
 
     public function schedule_trucks()
@@ -21,4 +23,3 @@ class Driver extends Model
         return $this->hasMany(Schedule_Truck::class);
     }
 }
-

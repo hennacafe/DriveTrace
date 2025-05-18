@@ -18,7 +18,7 @@ class DriverController extends Controller
                 return $query->where($filter, 'like', "%{$search}%");
             })
             ->orderBy('Name') // Make sure this is capitalized correctly based on your DB
-            ->paginate(10);
+            ->paginate(5);
 
         return view('drivers.index', compact('drivers', 'search', 'filter'));
     }
@@ -77,14 +77,20 @@ class DriverController extends Controller
     }
 
     // PDF Export Method
-    public function exportPDF()
+    public function exportPDF(Request $request)
     {
-        $drivers = Driver::all();  // Retrieve all driver records
+        $search = $request->input('search');
+        $filter = $request->input('filter');
 
-        // Load the PDF view and pass the drivers data
+        $drivers = Driver::query()
+            ->when($search && $filter, function ($query) use ($search, $filter) {
+                return $query->where($filter, 'like', "%{$search}%");
+            })
+            ->orderBy('Name')
+            ->get();
+
         $pdf = PDF::loadView('drivers.pdf', compact('drivers'));
-
-        // Download the generated PDF
         return $pdf->download('drivers-report.pdf');
     }
+
 }

@@ -110,12 +110,12 @@
 
                 {{-- PDF Export Button --}}
                 <div class="mt-4 px-4 py-2 text-right">
-                    <a href="{{ route('drivers.export.pdf') }}"
-                       class="bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded shadow transition">
+                    <a href="{{ route('drivers.export.pdf', ['search' => request('search'), 'filter' => request('filter')]) }}"
+                    class="bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded shadow transition">
                         Export PDF
                     </a>
                 </div>
-
+             
             </div>
         </div>
     </div>

@@ -18,6 +18,12 @@
                     <x-nav-link :href="route('drivers.index')" :active="request()->routeIs('drivers.*')">
                         {{ __('Drivers') }}
                     </x-nav-link>
+                    <x-nav-link :href="route('trucks.index')" :active="request()->routeIs('trucks.*')">
+                        {{ __('Trucks') }}
+                    </x-nav-link>
+                    <x-nav-link :href="route('schedule_trucks.index')" :active="request()->routeIs('schedule_trucks.*')">
+                        {{ __('Schedule') }}
+                    </x-nav-link>
                 </div>
             </div>
 
@@ -86,6 +92,12 @@
             </x-responsive-nav-link>
             <x-responsive-nav-link :href="route('drivers.index')" :active="request()->routeIs('drivers.*')">
                 {{ __('Drivers') }}
+            </x-responsive-nav-link>
+            <x-responsive-nav-link :href="route('trucks.index')" :active="request()->routeIs('trucks.*')">
+                {{ __('Trucks') }}
+            </x-responsive-nav-link>
+            <x-responsive-nav-link :href="route('schedule_trucks.index')" :active="request()->routeIs('schedule_trucks.*')">
+                {{ __('Schedule') }}
             </x-responsive-nav-link>
         </div>
 

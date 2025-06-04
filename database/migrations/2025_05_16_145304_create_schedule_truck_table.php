@@ -16,6 +16,7 @@ return new class extends Migration
             $table->foreignId('driver_id')->constrained('drivers')->onDelete('cascade');
             $table->foreignId('truck_id')->constrained('trucks')->onDelete('cascade');
             $table->string('cargo')->nullable();
+            $table->string('destination')->nullable(); 
             $table->string('status');
             $table->timestamps();
         });

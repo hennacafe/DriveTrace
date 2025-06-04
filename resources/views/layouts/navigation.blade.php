@@ -15,6 +15,16 @@
                     <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
                         {{ __('Dashboard') }}
                     </x-nav-link>
+
+                    @if(auth()->check() && auth()->user()->role === 'admin')
+                        <x-nav-link :href="route('admin.users.pending')" :active="request()->routeIs('admin.users.pending')">
+                            {{ __('Pending Users') }}
+                        </x-nav-link>
+                        <x-nav-link :href="route('admin.users.approved')" :active="request()->routeIs('admin.users.approved')">
+                            {{ __('Approved Users') }}
+                        </x-nav-link>
+                    @endif
+
                     <x-nav-link :href="route('drivers.index')" :active="request()->routeIs('drivers.*')">
                         {{ __('Drivers') }}
                     </x-nav-link>
@@ -32,18 +42,19 @@
                 <x-dropdown align="right" width="48">
                     <x-slot name="trigger">
                         <button class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 bg-white hover:text-gray-700 focus:outline-none transition ease-in-out duration-150">
-                            {{-- Dynamic Avatar --}}
-                            @if(Auth::user()->avatar)
-                                <img src="{{ asset('storage/' . Auth::user()->avatar) }}"
-                                     alt="User Avatar"
-                                     class="h-6 w-6 rounded-full object-cover me-2" />
-                            @else
-                                <img src="{{ asset('images/avatar.png') }}"
-                                     alt="Default Avatar"
-                                     class="h-6 w-6 rounded-full object-cover me-2" />
-                            @endif
+                            <!-- User Avatar -->
+                            <div class="mr-3">
+                                @if(Auth::user()->avatar)
+                                    <img src="{{ asset('storage/' . Auth::user()->avatar) }}"
+                                         class="w-6 h-6 rounded-full object-cover" alt="User Avatar">
+                                @else
+                                    <div class="w-6 h-6 rounded-full bg-blue-500 flex items-center justify-center text-white">
+                                        {{ substr(Auth::user()->name, 0, 1) }}
+                                    </div>
+                                @endif
+                            </div>
 
-                            <span class="text-sm">{{ Auth::user()->name }}</span>
+                            <div>{{ Auth::user()->name }}</div>
 
                             <div class="ms-1">
                                 <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
@@ -90,6 +101,16 @@
             <x-responsive-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
                 {{ __('Dashboard') }}
             </x-responsive-nav-link>
+
+            @if(auth()->check() && auth()->user()->role === 'admin')
+                <x-responsive-nav-link :href="route('admin.users.pending')" :active="request()->routeIs('admin.users.pending')">
+                    {{ __('Pending Users') }}
+                </x-responsive-nav-link>
+                <x-nav-link :href="route('admin.users.approved')" :active="request()->routeIs('admin.users.approved')">
+                    {{ __('Approved Users') }}
+                </x-nav-link>
+            @endif
+
             <x-responsive-nav-link :href="route('drivers.index')" :active="request()->routeIs('drivers.*')">
                 {{ __('Drivers') }}
             </x-responsive-nav-link>
@@ -104,19 +125,20 @@
         <!-- Responsive Settings Options -->
         <div class="pt-4 pb-1 border-t border-gray-200 dark:border-gray-600">
             <div class="px-4 flex items-center gap-2">
-                {{--  Dynamic Avatar in Mobile View --}}
-                @if(Auth::user()->avatar)
-                    <img src="{{ asset('storage/' . Auth::user()->avatar) }}"
-                         alt="User Avatar"
-                         class="h-8 w-8 rounded-full object-cover" />
-                @else
-                    <img src="{{ asset('images/avatar.png') }}"
-                         alt="Default Avatar"
-                         class="h-8 w-8 rounded-full object-cover" />
-                @endif
+                {{-- Dynamic Avatar in Mobile View --}}
+                <img src="{{ Auth::check() && Auth::user()->avatar && file_exists(public_path('storage/' . Auth::user()->avatar)) 
+                    ? asset('storage/' . Auth::user()->avatar) 
+                    : asset('images/avatar.png') }}" 
+                    alt="User Avatar"
+                    class="h-6 w-6 rounded-full object-cover me-2" />
                 <div>
-                    <div class="font-medium text-base text-gray-800 dark:text-gray-200">{{ Auth::user()->name }}</div>
-                    <div class="font-medium text-sm text-gray-500">{{ Auth::user()->email }}</div>
+                    @if(Auth::check())
+                        <div class="font-medium text-base text-gray-800 dark:text-gray-200">{{ Auth::user()->name }}</div>
+                        <div class="font-medium text-sm text-gray-500">{{ Auth::user()->email }}</div>
+                    @else
+                        <div class="font-medium text-base text-gray-800 dark:text-gray-200">Guest</div>
+                        <div class="font-medium text-sm text-gray-500">guest@example.com</div>
+                    @endif
                 </div>
             </div>
 

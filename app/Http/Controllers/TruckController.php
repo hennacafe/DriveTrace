@@ -62,6 +62,33 @@ class TruckController extends Controller
         $truck->delete();
         return redirect()->route('trucks.index')->with('success', 'Truck deleted successfully.');
     }
+    
+    public function getRealTimeTruckLocations()
+    {
+        // Fetch all truck data (you can customize this as needed, e.g., only active trucks)
+        $trucks = Truck::all(); 
+
+        // Return the truck data as a JSON response
+        return response()->json($trucks);
+    }
+
+
+    public function getLocation($truckId)
+    {
+        // Fetch the specific truck by its ID
+        $truck = Truck::find($truckId); // You can replace $truckId with dynamic logic if needed
+
+        if ($truck) {
+            // Return the truck's latitude and longitude as a JSON response
+            return response()->json([
+                'latitude' => $truck->latitude,  // Replace these with the correct column names
+                'longitude' => $truck->longitude
+            ]);
+        } else {
+            return response()->json(['error' => 'Truck not found'], 404);
+        }
+    }
+
 
     public function exportPDF(Request $request)
     {

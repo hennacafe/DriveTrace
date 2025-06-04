@@ -15,6 +15,7 @@ class Schedule_Truck extends Model
         'driver_id',
         'truck_id',
         'cargo',
+        'destination',
         'status',
     ];
 

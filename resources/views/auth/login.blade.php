@@ -1,4 +1,10 @@
 <x-guest-layout>
+    @if(session('success'))
+        <div class="mb-4 rounded bg-green-100 border border-green-400 text-green-700 px-4 py-3" role="alert">
+            {{ session('success') }}
+        </div>
+    @endif
+
     <!-- Session Status -->
     <x-auth-session-status class="mb-4" :status="session('status')" />
 

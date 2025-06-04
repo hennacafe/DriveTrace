@@ -19,6 +19,7 @@ class Schedule_TruckSeeder extends Seeder
                 'driver_id' => rand(1, 10),
                 'truck_id' => rand(1, 10),
                 'cargo' => 'Cargo Load ' . $i,
+                'destination' => 'Destination ' . $i,
                 'status' => ['Pending', 'In Transit', 'Delivered'][rand(0, 2)],
             ]);
         }

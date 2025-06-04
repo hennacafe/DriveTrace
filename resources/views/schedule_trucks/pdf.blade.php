@@ -40,6 +40,7 @@
                 <th>Driver</th>
                 <th>Truck</th>
                 <th>Cargo</th>
+                <th>Destination</th> <!-- Added Destination column -->
                 <th>Status</th>
             </tr>
         </thead>
@@ -49,6 +50,7 @@
                     <td>{{ $schedule->driver->Name ?? '-' }}</td>
                     <td>{{ $schedule->truck->Plate_number ?? '-' }}</td>
                     <td>{{ $schedule->cargo }}</td>
+                    <td>{{ $schedule->destination ?? '-' }}</td> <!-- Displaying Destination -->
                     <td>{{ $schedule->status }}</td>
                 </tr>
             @endforeach

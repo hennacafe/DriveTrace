@@ -21,7 +21,8 @@ class ScheduleTruckController extends Controller
                 })->orWhereHas('truck', function ($q) use ($search) {
                     $q->where('plate_number', 'like', "%{$search}%");
                 })->orWhere('cargo', 'like', "%{$search}%")
-                  ->orWhere('status', 'like', "%{$search}%");
+                  ->orWhere('status', 'like', "%{$search}%")
+                  ->orWhere('destination', 'like', "%{$search}%");  // Added destination search
             })
             ->latest()
             ->paginate(5)
@@ -32,8 +33,18 @@ class ScheduleTruckController extends Controller
 
     public function create()
     {
-        $drivers = Driver::all();
-        $trucks = Truck::all();
+        // Get all assigned driver IDs in schedule_truck table
+        $assignedDriverIds = Schedule_Truck::pluck('driver_id')->toArray();
+
+        // Get available drivers not assigned yet
+        $drivers = Driver::whereNotIn('id', $assignedDriverIds)->get();
+
+        // Get all assigned truck IDs in schedule_truck table
+        $assignedTruckIds = Schedule_Truck::pluck('truck_id')->toArray();
+
+        // Get available trucks not assigned yet
+        $trucks = Truck::whereNotIn('id', $assignedTruckIds)->get();
+
         return view('schedule_trucks.create', compact('drivers', 'trucks'));
     }
 
@@ -43,6 +54,7 @@ class ScheduleTruckController extends Controller
             'driver_id' => 'required|exists:drivers,id',
             'truck_id' => 'required|exists:trucks,id',
             'cargo' => 'required|string',
+            'destination' => 'nullable|string', // Added destination validation
             'status' => 'required|string',
         ]);
 
@@ -64,6 +76,7 @@ class ScheduleTruckController extends Controller
             'driver_id' => 'required|exists:drivers,id',
             'truck_id' => 'required|exists:trucks,id',
             'cargo' => 'required|string',
+            'destination' => 'nullable|string', // Added destination validation
             'status' => 'required|string',
         ]);
 
@@ -89,7 +102,8 @@ class ScheduleTruckController extends Controller
                 })->orWhereHas('truck', function ($q) use ($search) {
                     $q->where('plate_number', 'like', "%{$search}%");
                 })->orWhere('cargo', 'like', "%{$search}%")
-                  ->orWhere('status', 'like', "%{$search}%");
+                  ->orWhere('status', 'like', "%{$search}%")
+                  ->orWhere('destination', 'like', "%{$search}%");  // Added destination search
             })->get();
 
         $pdf = PDF::loadView('schedule_trucks.pdf', compact('schedules'));

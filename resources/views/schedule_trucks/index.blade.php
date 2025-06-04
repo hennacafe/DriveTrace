@@ -21,6 +21,7 @@
                         <option value="truck_id" {{ request('filter') == 'truck_id' ? 'selected' : '' }}>Truck</option>
                         <option value="cargo" {{ request('filter') == 'cargo' ? 'selected' : '' }}>Cargo</option>
                         <option value="status" {{ request('filter') == 'status' ? 'selected' : '' }}>Status</option>
+                        <option value="destination" {{ request('filter') == 'destination' ? 'selected' : '' }}>Destination</option> <!-- Added filter option for Destination -->
                     </select>
 
                     <input type="text" name="search" placeholder="Search..." value="{{ request('search') }}"
@@ -57,6 +58,7 @@
                             <th class="px-4 py-2 text-left text-sm font-semibold">Driver</th>
                             <th class="px-4 py-2 text-left text-sm font-semibold">Truck</th>
                             <th class="px-4 py-2 text-left text-sm font-semibold">Cargo</th>
+                            <th class="px-4 py-2 text-left text-sm font-semibold">Destination</th> <!-- Added Destination Column -->
                             <th class="px-4 py-2 text-left text-sm font-semibold">Status</th>
                             <th class="px-4 py-2 text-left text-sm font-semibold">Actions</th>
                         </tr>
@@ -67,6 +69,7 @@
                                 <td class="px-4 py-2 text-gray-900 dark:text-white">{{ $schedule->driver->Name ?? '-' }}</td>
                                 <td class="px-4 py-2 text-gray-900 dark:text-white">{{ $schedule->truck->Plate_number ?? '-' }}</td>
                                 <td class="px-4 py-2 text-gray-900 dark:text-white">{{ $schedule->cargo }}</td>
+                                <td class="px-4 py-2 text-gray-900 dark:text-white">{{ $schedule->destination ?? 'N/A' }}</td> <!-- Displaying Destination -->
                                 <td class="px-4 py-2 text-gray-900 dark:text-white">{{ $schedule->status }}</td>
                                 <td class="px-4 py-2 flex flex-wrap gap-2">
                                     <a href="{{ route('schedule_trucks.edit', $schedule->id) }}"
@@ -86,7 +89,7 @@
                             </tr>
                         @empty
                             <tr>
-                                <td colspan="5" class="px-4 py-2 text-center text-gray-500 dark:text-gray-400">No records found.</td>
+                                <td colspan="6" class="px-4 py-2 text-center text-gray-500 dark:text-gray-400">No records found.</td>
                             </tr>
                         @endforelse
                     </tbody>
@@ -104,5 +107,5 @@
                 </div>
             </div>
         </div>
-    </div>
+    </div>  
 </x-app-layout>
